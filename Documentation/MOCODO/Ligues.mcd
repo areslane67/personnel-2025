@@ -1,0 +1,6 @@
+
+
+LIGUE: ID Ligue,NOM Ligue
+
+APPARTENIR, 0N LIGUE, 01 EMPLOYE
+EMPLOYE: ID Employé, NOM Employé, prénom Employé, mail Employé, MDP Employé, Date arrivée, Date départ, habilitation
