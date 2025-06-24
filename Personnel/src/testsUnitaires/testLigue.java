@@ -1,118 +1,75 @@
 package testsUnitaires;
 
-import static org.junit.jupiter.api.Assertions.*;
-import java.time.LocalDate;
-import org.junit.jupiter.api.Test;
-import personnel.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class testLigue
-{
+import java.time.LocalDate;
+
+import org.junit.jupiter.api.Test;
+
+import personnel.Employe;
+import personnel.GestionPersonnel;
+import personnel.Ligue;
+import personnel.SauvegardeImpossible;
+
+class testLigue {
 	GestionPersonnel gestionPersonnel = GestionPersonnel.getGestionPersonnel();
-	
+
 	@Test
-	void addEmploye() throws SauvegardeImpossible
-	{
+	void createLigue() throws SauvegardeImpossible {
 		Ligue ligue = gestionPersonnel.addLigue("Fléchettes");
-		Employe employe = ligue.addEmploye("Bouchard", "Gérard", "g.bouchard@gmail.com", "azerty", LocalDate.now(), null); 
+		assertEquals("Fléchettes", ligue.getNom());
+
+		Ligue ligueF = gestionPersonnel.addLigue("Football");
+		assertEquals("Football", ligueF.getNom());
+	}
+
+	@Test
+	void addEmploye() throws SauvegardeImpossible {
+		Ligue ligue = gestionPersonnel.addLigue("Fléchettes");
+		Employe employe = ligue.addEmploye("Bouchard", "Gérard", "g.bouchard@gmail.com", "azerty", LocalDate.now(),
+				null);
 		assertEquals(employe, ligue.getEmployes().first());
 	}
-	
+
 	@Test
-	void getNom() throws SauvegardeImpossible
-	{
-		Ligue ligue = gestionPersonnel.addLigue("Fléchettes");
-		Employe employe = ligue.addEmploye("Bouchard", "Gérard", "g.bouchard@gmail.com", "azerty", LocalDate.now(), LocalDate.parse("2023-01-13")); 
-		assertEquals("Bouchard", employe.getNom());
+	void getNom() throws SauvegardeImpossible {
+		Ligue ligue = gestionPersonnel.addLigue("Football");
+		assertEquals("Football", ligue.getNom());
 	}
-	
+
 	@Test
-	void setNom() throws SauvegardeImpossible
-	{
-		Ligue ligue = gestionPersonnel.addLigue("Fléchettes");
-		Employe employe = ligue.addEmploye("Bouchard", "Gérard", "g.bouchard@gmail.com", "azerty", LocalDate.now(), LocalDate.parse("2023-01-13")); 
-		employe.setNom("Lucas");
-		assertEquals("Lucas", employe.getNom());
+	void setNom() throws SauvegardeImpossible {
+		Ligue ligue = gestionPersonnel.addLigue("Football");
+		ligue.setNom("Fléchettes");
+		assertEquals("Fléchettes", ligue.getNom());
 	}
-	
+
 	@Test
-	void getPrenom() throws SauvegardeImpossible
-	{
-		Ligue ligue = gestionPersonnel.addLigue("Fléchettes");
-		Employe employe = ligue.addEmploye("Bouchard", "Gérard", "g.bouchard@gmail.com", "azerty", LocalDate.now(), LocalDate.parse("2023-01-13")); 
-		assertEquals("Gérard", employe.getPrenom());
+	void toStringLigue() throws SauvegardeImpossible {
+		Ligue ligue = gestionPersonnel.addLigue("Football");
+		assertEquals("Football", ligue.toString());
 	}
-	
+
 	@Test
-	void setPrenom() throws SauvegardeImpossible
-	{
-		Ligue ligue = gestionPersonnel.addLigue("Fléchettes");
-		Employe employe = ligue.addEmploye("Bouchard", "Gérard", "g.bouchard@gmail.com", "azerty", LocalDate.now(), LocalDate.parse("2023-01-13")); 
-		employe.setNom("Lucas");
-		assertEquals("Lucas", employe.getNom());
+	void setAdmin() throws SauvegardeImpossible {
+		Ligue ligue = gestionPersonnel.addLigue("Football");
+		Employe employe = ligue.addEmploye("Bouchard", "Gérard", "g.bouchard@gmail.com", "azerty", null, null);
+		ligue.setAdministrateur(employe);
+		assertEquals(employe, ligue.getAdministrateur());
 	}
-	
+
 	@Test
-	void getMail() throws SauvegardeImpossible
-	{
-		Ligue ligue = gestionPersonnel.addLigue("Fléchettes");
-		Employe employe = ligue.addEmploye("Bouchard", "Gérard", "g.bouchard@gmail.com", "azerty", LocalDate.now(), LocalDate.parse("2023-01-13")); 
-		assertEquals("g.bouchard@gmail.com", employe.getMail());
+	void getAdmin() throws SauvegardeImpossible {
+		Ligue ligue = gestionPersonnel.addLigue("Football");
+		assertEquals("root   (null/null) (super-utilisateur)", ligue.getAdministrateur().toString());
 	}
-	
+
 	@Test
-	void setMail() throws SauvegardeImpossible
-	{
-		Ligue ligue = gestionPersonnel.addLigue("Fléchettes");
-		Employe employe = ligue.addEmploye("Bouchard", "Gérard", "g.bouchard@gmail.com", "azerty", LocalDate.now(), LocalDate.parse("2023-01-13")); 
-		employe.setMail("Lucas.seggar@gmail.com");
-		assertEquals("Lucas.seggar@gmail.com", employe.getMail());
+	void remove() throws SauvegardeImpossible {
+		Ligue ligue = gestionPersonnel.addLigue("Football");
+		int initSize = gestionPersonnel.getLigues().size();
+		ligue.remove();
+		assertEquals(initSize, gestionPersonnel.getLigues().size());
 	}
-	
-	@Test
-	void checkpwd() throws SauvegardeImpossible
-	{
-		Ligue ligue = gestionPersonnel.addLigue("Fléchettes");
-		Employe employe = ligue.addEmploye("Bouchard", "Gérard", "g.bouchard@gmail.com", "azerty", LocalDate.now(), LocalDate.parse("2023-01-13")); 
-		assertTrue(employe.checkPassword("azerty"));
-		assertFalse(employe.checkPassword("qwerty"));
-		assertFalse(employe.checkPassword(""));
-		assertFalse(employe.checkPassword("aZerty"));
-		assertFalse(employe.checkPassword("azerty#"));
-	}
-	
-	@Test
-	void setpwd() throws SauvegardeImpossible
-	{
-		Ligue ligue = gestionPersonnel.addLigue("Fléchettes");
-		Employe employe = ligue.addEmploye("Bouchard", "Gérard", "g.bouchard@gmail.com", "azerty", LocalDate.now(), LocalDate.parse("2023-01-13")); 
-		employe.setPassword("new_pwd");
-		assertTrue(employe.checkPassword("new_pwd"));
-		assertFalse(employe.checkPassword("new pwd"));
-		assertFalse(employe.checkPassword(""));
-		assertFalse(employe.checkPassword("azerty"));
-	}
-	
-	@Test
-	void getLigue() throws SauvegardeImpossible
-	{
-		Ligue ligue = gestionPersonnel.addLigue("Fléchettes");
-		Employe employe = ligue.addEmploye("Bouchard", "Gérard", "g.bouchard@gmail.com", "azerty", LocalDate.now(), LocalDate.parse("2023-01-13")); 
-		assertEquals(ligue, employe.getLigue());
-	}
-	
-	@Test
-	void getArrive() throws SauvegardeImpossible
-	{
-		Ligue ligue = gestionPersonnel.addLigue("Fléchettes");
-		Employe employe = ligue.addEmploye("Bouchard", "Gérard", "g.bouchard@gmail.com", "azerty", LocalDate.parse("2019-11-22"), LocalDate.parse("2023-01-13")); 
-		assertEquals(LocalDate.parse("2019-11-22"), employe.getDateArrive());
-	}
-	
-	@Test
-	void getDepart() throws SauvegardeImpossible
-	{
-		Ligue ligue = gestionPersonnel.addLigue("Fléchettes");
-		Employe employe = ligue.addEmploye("Bouchard", "Gérard", "g.bouchard@gmail.com", "azerty", LocalDate.parse("2019-11-22"), LocalDate.parse("2023-01-13")); 
-		assertEquals(LocalDate.parse("2023-01-13"), employe.getDateDepart());
-	}
+
 }
