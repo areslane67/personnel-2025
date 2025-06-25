@@ -1,1 +1,0 @@
-INDEX VERSION 1.134+C:\Users\aresl\eclipse-workspace\Personnel\.metadata\.plugins\org.eclipse.jdt.core

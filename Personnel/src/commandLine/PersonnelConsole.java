@@ -65,6 +65,13 @@ public class PersonnelConsole {
 		return ok;
 	}
 
+	// Ajout d'une méthode utilitaire getString si l'import statique n'est pas disponible
+	private String getString(String message) {
+		System.out.print(message);
+		java.util.Scanner scanner = new java.util.Scanner(System.in);
+		return scanner.nextLine();
+	}
+
 	public static void main(String[] args) throws SauvegardeImpossible {
 		PersonnelConsole personnelConsole = new PersonnelConsole(GestionPersonnel.getGestionPersonnel());
 		if (personnelConsole.verifiePassword())
